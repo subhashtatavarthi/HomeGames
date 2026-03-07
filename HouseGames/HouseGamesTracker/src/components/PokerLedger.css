@@ -1,0 +1,187 @@
+.poker-container {
+    width: 100%;
+}
+
+.poker-setup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding: 2rem;
+    background: rgba(241, 245, 249, 0.4);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.config-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.buyin-config {
+    width: 100px;
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 700;
+    color: #0369a1;
+    border-color: #7dd3fc !important;
+    background: #f0f9ff !important;
+}
+
+.poker-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), inset 0 2px 0 rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.stat-card.balanced {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-color: #a7f3d0;
+}
+
+.stat-card.balanced .stat-value {
+    color: #059669;
+}
+
+.stat-card.unbalanced {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border-color: #fca5a5;
+    animation: gentlePulse 2s infinite;
+}
+
+.stat-card.unbalanced .stat-value {
+    color: #dc2626;
+}
+
+@keyframes gentlePulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.ledger-table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.ledger-table {
+    margin-top: 0;
+    box-shadow: none;
+}
+
+.player-name-cell {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1e293b;
+    background: #f8fafc;
+}
+
+.invested-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.ledger-input {
+    width: 100px !important;
+    text-align: right !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    padding-right: 1rem !important;
+    color: #334155 !important;
+    border-color: #cbd5e1 !important;
+}
+
+.cashout-input {
+    color: #0d9488 !important;
+    border-color: #99f6e4 !important;
+    background: #f0fdfa !important;
+}
+
+.buy-in-btn {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px dashed #cbd5e1 !important;
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    box-shadow: none !important;
+}
+
+.buy-in-btn:hover {
+    background: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+    color: #1e293b !important;
+    transform: translateY(0) !important;
+}
+
+.net-profit-cell {
+    background: #f8fafc;
+}
+
+.net-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1.25rem;
+    min-width: 80px;
+}
+
+.net-badge.positive {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.net-badge.negative {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.net-badge.neutral {
+    background: #f1f5f9;
+    color: #64748b;
+}
