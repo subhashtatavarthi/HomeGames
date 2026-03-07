@@ -211,7 +211,7 @@ function Phase10ScoreSheet({ players }) {
                                                     ) : (
                                                         <div className="round-input-group">
                                                             <div className="phase-at-round">
-                                                                P{phaseAtRound}
+                                                                P{phaseAtRound}: {PHASES[phaseAtRound - 1]?.desc}
                                                             </div>
                                                             <label className="completed-check">
                                                                 <input
