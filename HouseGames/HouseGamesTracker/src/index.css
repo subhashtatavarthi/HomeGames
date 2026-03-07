@@ -26,9 +26,6 @@
 
 body {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   padding-top: 3rem;
   padding-bottom: 3rem;
   background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
@@ -127,9 +124,7 @@ select:focus {
     0 20px 25px -5px rgba(0, 0, 0, 0.05),
     0 8px 10px -6px rgba(0, 0, 0, 0.01),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  width: 95%;
-  max-width: 900px;
-  margin: 0 auto;
+  width: 100%;
   transition: transform 0.3s ease;
 }
 
@@ -274,4 +269,181 @@ th {
 .player-setup input {
   width: 100%;
   max-width: 250px;
+}
+
+/* =========================================
+   3-COLUMN APP LAYOUT 
+   ========================================= */
+
+.app-container {
+  display: grid;
+  grid-template-columns: 280px 1fr 340px;
+  gap: 2rem;
+  padding: 0 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+  min-height: calc(100vh - 6rem);
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .app-container {
+    grid-template-columns: 240px 1fr 300px;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    align-items: stretch;
+  }
+}
+
+/* Sidebar Containers */
+.left-sidebar,
+.right-sidebar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 2rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 6rem);
+}
+
+.center-panel h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Global Player Toss Sidebar styling */
+.left-sidebar h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  color: #1e293b;
+}
+
+.sidebar-subtext {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.global-player-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.global-player-input {
+  width: 100%;
+}
+
+.global-add-btn {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.global-player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.global-player-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.global-player-item:hover {
+  transform: translateX(4px);
+  background: white;
+}
+
+.player-order-badge {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-right: 0.75rem;
+}
+
+.player-name-text {
+  flex-grow: 1;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.remove-player-btn {
+  background: transparent !important;
+  color: #94a3b8 !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 1.25rem !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+
+.remove-player-btn:hover {
+  color: #ef4444 !important;
+  transform: none !important;
+}
+
+.global-player-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.global-randomize-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: white;
+  padding: 0.75rem;
+  font-weight: 700;
+}
+
+.global-clear-btn {
+  width: 100%;
+  background: transparent !important;
+  border: 1px solid #fecaca !important;
+  color: #ef4444 !important;
+  box-shadow: none !important;
+  padding: 0.5rem !important;
+}
+
+.global-clear-btn:hover {
+  background: #fef2f2 !important;
 }

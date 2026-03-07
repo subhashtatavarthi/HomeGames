@@ -1,73 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './PokerLedger.css';
 
-function PokerLedger() {
-    const [players, setPlayers] = useState([]);
-    const [newPlayerName, setNewPlayerName] = useState('');
+function PokerLedger({ players }) {
     const [defaultBuyIn, setDefaultBuyIn] = useState(500);
+    const [ledger, setLedger] = useState({});
 
-    const addPlayer = () => {
-        if (newPlayerName.trim() === '') return;
+    useEffect(() => {
+        setLedger(prev => {
+            const newLedger = { ...prev };
+            players.forEach(p => {
+                if (!newLedger[p.id]) {
+                    newLedger[p.id] = { invested: 0, cashOut: '' };
+                }
+            });
+            return newLedger;
+        });
+    }, [players]);
 
-        const newPlayerId = Date.now().toString();
-        setPlayers([...players, {
-            id: newPlayerId,
-            name: newPlayerName.trim(),
-            invested: 0,
-            cashOut: ''
-        }]);
-        setNewPlayerName('');
-    };
-
-    const resetGame = () => {
-        if (window.confirm("Are you sure you want to clear the ledger and start a new game?")) {
-            setPlayers([]);
-        }
-    };
-
-    const updatePlayer = (id, field, value) => {
-        setPlayers(players.map(p => {
-            if (p.id === id) {
-                return { ...p, [field]: value };
-            }
-            return p;
+    const updateLedger = (id, field, value) => {
+        setLedger(prev => ({
+            ...prev,
+            [id]: { ...prev[id], [field]: value }
         }));
     };
 
     const addBuyIn = (id) => {
-        setPlayers(players.map(p => {
-            if (p.id === id) {
-                return { ...p, invested: p.invested + Number(defaultBuyIn) };
-            }
-            return p;
+        setLedger(prev => ({
+            ...prev,
+            [id]: { ...prev[id], invested: (prev[id]?.invested || 0) + Number(defaultBuyIn) }
         }));
     };
 
-    const calculateNet = (player) => {
-        const out = player.cashOut === '' ? 0 : Number(player.cashOut);
-        return out - player.invested;
+    const calculateNet = (playerId) => {
+        const entry = ledger[playerId];
+        if (!entry) return 0;
+        const out = entry.cashOut === '' ? 0 : Number(entry.cashOut);
+        return out - entry.invested;
     };
 
-    const totalNet = players.reduce((sum, p) => sum + calculateNet(p), 0);
-    const totalInvested = players.reduce((sum, p) => sum + p.invested, 0);
-    const totalCashedOut = players.reduce((sum, p) => sum + (p.cashOut === '' ? 0 : Number(p.cashOut)), 0);
-
-    const randomizeSeating = () => {
-        setPlayers([...players].sort(() => Math.random() - 0.5));
-    };
+    const totalInvested = players.reduce((sum, p) => sum + (ledger[p.id]?.invested || 0), 0);
+    const totalCashedOut = players.reduce((sum, p) => {
+        const co = ledger[p.id]?.cashOut;
+        return sum + (co === '' || co === undefined ? 0 : Number(co));
+    }, 0);
+    const totalNet = players.reduce((sum, p) => sum + calculateNet(p.id), 0);
 
     const saveMatch = () => {
         if (players.length === 0) return;
-
         let maxNet = -Infinity;
         const playerStats = players.map(p => {
-            const net = calculateNet(p);
+            const net = calculateNet(p.id);
             if (net > maxNet) maxNet = net;
             return { name: p.name, score: net };
         });
-
         const winners = playerStats.filter(p => p.score === maxNet && p.score > 0);
-
         const match = {
             id: Date.now(),
             game: 'Poker',
@@ -76,10 +62,8 @@ function PokerLedger() {
             winners: winners.length ? winners : playerStats.filter(p => p.score === maxNet),
             note: `Total Bank: $${totalInvested}`
         };
-
         const existing = JSON.parse(localStorage.getItem('houseGamesHistory') || '[]');
         localStorage.setItem('houseGamesHistory', JSON.stringify([...existing, match]));
-
         alert("Ledger saved successfully to History!");
     };
 
@@ -112,26 +96,13 @@ function PokerLedger() {
                         className="buyin-config"
                     />
                 </div>
-
-                <div className="player-setup" style={{ marginBottom: 0 }}>
-                    <input
-                        type="text"
-                        value={newPlayerName}
-                        onChange={(e) => setNewPlayerName(e.target.value)}
-                        placeholder="Player Name..."
-                        onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
-                    />
-                    <button onClick={addPlayer}>Add Player</button>
-                    {players.length > 0 && (
-                        <>
-                            <button onClick={randomizeSeating} style={{ backgroundColor: '#10b981', marginLeft: '1rem' }}>🎲 Randomize Seating</button>
-                            <button onClick={resetGame} style={{ backgroundColor: '#ef4444', marginLeft: '1rem' }}>Clear All</button>
-                        </>
-                    )}
-                </div>
             </div>
 
-            {players.length > 0 && (
+            {players.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+                    Add players from the left sidebar to begin.
+                </div>
+            ) : (
                 <div className="ledger-table-wrapper">
                     <table className="ledger-table">
                         <thead>
@@ -144,9 +115,10 @@ function PokerLedger() {
                         </thead>
                         <tbody>
                             {players.map(p => {
-                                const net = calculateNet(p);
+                                const net = calculateNet(p.id);
                                 const isPositive = net > 0;
                                 const isNegative = net < 0;
+                                const entry = ledger[p.id] || { invested: 0, cashOut: '' };
 
                                 return (
                                     <tr key={p.id}>
@@ -155,8 +127,8 @@ function PokerLedger() {
                                             <div className="invested-cell">
                                                 <input
                                                     type="number"
-                                                    value={p.invested}
-                                                    onChange={(e) => updatePlayer(p.id, 'invested', Number(e.target.value))}
+                                                    value={entry.invested}
+                                                    onChange={(e) => updateLedger(p.id, 'invested', Number(e.target.value))}
                                                     className="ledger-input"
                                                 />
                                                 <button
@@ -172,8 +144,8 @@ function PokerLedger() {
                                             <input
                                                 type="number"
                                                 placeholder="0"
-                                                value={p.cashOut}
-                                                onChange={(e) => updatePlayer(p.id, 'cashOut', e.target.value)}
+                                                value={entry.cashOut}
+                                                onChange={(e) => updateLedger(p.id, 'cashOut', e.target.value)}
                                                 className="ledger-input cashout-input"
                                             />
                                         </td>

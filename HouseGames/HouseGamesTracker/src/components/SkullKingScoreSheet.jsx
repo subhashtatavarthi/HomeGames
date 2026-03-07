@@ -1,34 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function SkullKingScoreSheet() {
-    const [players, setPlayers] = useState([]);
-    const [newPlayerName, setNewPlayerName] = useState('');
-
-    // State structure for scores: [playerId][roundIndex] = { bid: 0, won: 0, bonus: 0 }
+function SkullKingScoreSheet({ players }) {
     const [scores, setScores] = useState({});
 
-    const addPlayer = () => {
-        if (newPlayerName.trim() === '') return;
-
-        const newPlayerId = Date.now().toString();
-        setPlayers([...players, { id: newPlayerId, name: newPlayerName.trim() }]);
-
-        const initialScores = Array.from({ length: 10 }, () => ({
-            bid: '',
-            won: '',
-            bonus: ''
-        }));
-
-        setScores(prev => ({ ...prev, [newPlayerId]: initialScores }));
-        setNewPlayerName('');
-    };
-
-    const resetGame = () => {
-        if (window.confirm("Are you sure you want to clear all players and start a new game?")) {
-            setPlayers([]);
-            setScores({});
-        }
-    };
+    useEffect(() => {
+        setScores(prev => {
+            const newScores = { ...prev };
+            players.forEach(p => {
+                if (!newScores[p.id]) {
+                    newScores[p.id] = Array.from({ length: 10 }, () => ({
+                        bid: '',
+                        won: '',
+                        bonus: ''
+                    }));
+                }
+            });
+            return newScores;
+        });
+    }, [players]);
 
     const updateScore = (playerId, roundIndex, field, value) => {
         setScores(prev => {
@@ -42,55 +31,36 @@ function SkullKingScoreSheet() {
     };
 
     const calculateRoundScore = (roundObj, roundNumber) => {
-        // Standard Skull King scoring rules:
-        // If Bid == Won (and > 0): 20 points per trick won + Bonus points
-        // If Bid == Won (and == 0): 10 points * Round Number
-        // If Bid != Won: -10 points * Absolute difference between Bid and Won
-
-        if (roundObj.bid === '' || roundObj.won === '') return 0; // Don't calculate if inputs are missing
-
+        if (roundObj.bid === '' || roundObj.won === '') return 0;
         const bid = roundObj.bid;
         const won = roundObj.won;
         const bonus = roundObj.bonus === '' ? 0 : roundObj.bonus;
 
         if (bid === won) {
-            if (bid === 0) {
-                return (10 * roundNumber);
-            } else {
-                return (20 * won) + bonus;
-            }
+            if (bid === 0) return (10 * roundNumber);
+            else return (20 * won) + bonus;
         } else {
-            if (bid === 0) {
-                return -(10 * roundNumber);
-            } else {
-                const diff = Math.abs(bid - won);
-                return -(10 * diff);
-            }
+            if (bid === 0) return -(10 * roundNumber);
+            else return -(10 * Math.abs(bid - won));
         }
     };
 
     const calculateTotal = (playerId) => {
+        if (!scores[playerId]) return 0;
         return scores[playerId].reduce((acc, currentRound, idx) => {
             return acc + calculateRoundScore(currentRound, idx + 1);
         }, 0);
     };
 
-    const randomizeSeating = () => {
-        setPlayers([...players].sort(() => Math.random() - 0.5));
-    };
-
     const saveMatch = () => {
         if (players.length === 0) return;
-
         let maxScore = -Infinity;
         const playerTotals = players.map(p => {
             const total = calculateTotal(p.id);
             if (total > maxScore) maxScore = total;
             return { name: p.name, score: total };
         });
-
         const winners = playerTotals.filter(p => p.score === maxScore);
-
         const match = {
             id: Date.now(),
             game: 'Skull King',
@@ -98,10 +68,8 @@ function SkullKingScoreSheet() {
             players: playerTotals,
             winners: winners
         };
-
         const existing = JSON.parse(localStorage.getItem('houseGamesHistory') || '[]');
         localStorage.setItem('houseGamesHistory', JSON.stringify([...existing, match]));
-
         alert("Match saved successfully to the Leaderboard!");
     };
 
@@ -110,24 +78,11 @@ function SkullKingScoreSheet() {
             <h2>Skull King Tracker</h2>
             <p style={{ textAlign: 'center', marginBottom: '1rem', color: '#64748b' }}>Highest score wins!</p>
 
-            <div className="player-setup">
-                <input
-                    type="text"
-                    value={newPlayerName}
-                    onChange={(e) => setNewPlayerName(e.target.value)}
-                    placeholder="New Player Name..."
-                    onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
-                />
-                <button onClick={addPlayer}>Add Player</button>
-                {players.length > 0 && (
-                    <>
-                        <button onClick={randomizeSeating} style={{ backgroundColor: '#10b981', marginLeft: '1rem' }}>🎲 Randomize Seating</button>
-                        <button onClick={resetGame} style={{ backgroundColor: '#ef4444', marginLeft: '1rem' }}>Reset Game</button>
-                    </>
-                )}
-            </div>
-
-            {players.length > 0 && (
+            {players.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+                    Add players from the left sidebar to begin.
+                </div>
+            ) : (
                 <div style={{ overflowX: 'auto' }}>
                     <table>
                         <thead>
@@ -148,7 +103,7 @@ function SkullKingScoreSheet() {
                                         </div>
                                     </td>
                                     {players.map(p => {
-                                        const roundData = scores[p.id][roundIndex];
+                                        const roundData = scores[p.id] ? scores[p.id][roundIndex] : { bid: '', won: '', bonus: '' };
                                         return (
                                             <td key={p.id}>
                                                 <div className="skull-king-cell">
