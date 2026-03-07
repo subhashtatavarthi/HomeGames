@@ -1,0 +1,238 @@
+.phase10-container {
+    width: 100%;
+}
+
+.phase10-subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* Toolbar: Phase Reference Toggle + Point Values */
+.phase10-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(241, 245, 249, 0.5);
+    border-radius: 16px;
+}
+
+.phase-ref-toggle {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+}
+
+.point-ref {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.point-chip {
+    background: white;
+    padding: 0.3rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+/* Phase Reference Card (collapsible) */
+.phase-reference-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #faf5ff, #ede9fe);
+    border-radius: 16px;
+    border: 1px solid #ddd6fe;
+}
+
+.phase-ref-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.phase-ref-item:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.phase-ref-num {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.phase-ref-desc {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.empty-game-msg {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+}
+
+/* Player Phase Status Bar */
+.phase-status-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.phase-status-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.phase-status-card.finished {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-color: #6ee7b7;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.psc-name {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.psc-phase {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #6d28d9;
+}
+
+.psc-done {
+    color: #059669 !important;
+    font-size: 1.3rem !important;
+}
+
+.psc-desc {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.psc-total {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+}
+
+/* Scoring Table */
+.phase10-table {
+    width: 100%;
+}
+
+.round-label {
+    white-space: nowrap;
+}
+
+.round-num {
+    font-weight: 700;
+    color: #6d28d9;
+}
+
+.round-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem;
+}
+
+.phase-at-round {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #8b5cf6;
+    background: #ede9fe;
+    padding: 0.1rem 0.5rem;
+    border-radius: 99px;
+}
+
+.completed-check {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.completed-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #10b981;
+    cursor: pointer;
+}
+
+.check-label {
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.check-label.yes {
+    color: #059669;
+}
+
+.check-label.no {
+    color: #ef4444;
+}
+
+.hand-score-input {
+    width: 65px !important;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem !important;
+    padding: 0.35rem !important;
+}
+
+.finished-cell {
+    background: #ecfdf5 !important;
+}
+
+.done-dash {
+    color: #10b981;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+/* Actions Bar */
+.phase10-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.save-match-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
