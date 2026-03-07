@@ -44,6 +44,36 @@ function LeastCountScoreSheet() {
 
     const isEliminated = (playerId) => calculateTotal(playerId) >= targetScore;
 
+    const randomizeSeating = () => {
+        setPlayers([...players].sort(() => Math.random() - 0.5));
+    };
+
+    const saveMatch = () => {
+        if (players.length === 0) return;
+
+        let minScore = Infinity;
+        const playerTotals = players.map(p => {
+            const total = calculateTotal(p.id);
+            if (total < minScore) minScore = total;
+            return { name: p.name, score: total };
+        });
+
+        const winners = playerTotals.filter(p => p.score === minScore);
+
+        const match = {
+            id: Date.now(),
+            game: 'Least Count (7 Cards)',
+            date: new Date().toLocaleDateString(),
+            players: playerTotals,
+            winners: winners
+        };
+
+        const existing = JSON.parse(localStorage.getItem('houseGamesHistory') || '[]');
+        localStorage.setItem('houseGamesHistory', JSON.stringify([...existing, match]));
+
+        alert("Match saved successfully to the Leaderboard!");
+    };
+
     const addRound = () => {
         setRoundCount(prev => prev + 1);
         const newScores = { ...scores };
@@ -71,7 +101,10 @@ function LeastCountScoreSheet() {
                 />
                 <button onClick={addPlayer}>Add Player</button>
                 {players.length > 0 && (
-                    <button onClick={resetGame} style={{ backgroundColor: '#ef4444', marginLeft: '1rem' }}>Reset Game</button>
+                    <>
+                        <button onClick={randomizeSeating} style={{ backgroundColor: '#10b981', marginLeft: '1rem' }}>🎲 Randomize Seating</button>
+                        <button onClick={resetGame} style={{ backgroundColor: '#ef4444', marginLeft: '1rem' }}>Reset Game</button>
+                    </>
                 )}
             </div>
 
@@ -142,8 +175,9 @@ function LeastCountScoreSheet() {
                         </tbody>
                     </table>
 
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem', gap: '1rem' }}>
                         <button onClick={addRound} className="add-round-btn">+ Add Next Round</button>
+                        <button onClick={saveMatch} className="add-round-btn" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}>🏆 Finish & Save Match</button>
                     </div>
                 </div>
             )}

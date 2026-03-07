@@ -52,6 +52,37 @@ function PokerLedger() {
     const totalInvested = players.reduce((sum, p) => sum + p.invested, 0);
     const totalCashedOut = players.reduce((sum, p) => sum + (p.cashOut === '' ? 0 : Number(p.cashOut)), 0);
 
+    const randomizeSeating = () => {
+        setPlayers([...players].sort(() => Math.random() - 0.5));
+    };
+
+    const saveMatch = () => {
+        if (players.length === 0) return;
+
+        let maxNet = -Infinity;
+        const playerStats = players.map(p => {
+            const net = calculateNet(p);
+            if (net > maxNet) maxNet = net;
+            return { name: p.name, score: net };
+        });
+
+        const winners = playerStats.filter(p => p.score === maxNet && p.score > 0);
+
+        const match = {
+            id: Date.now(),
+            game: 'Poker',
+            date: new Date().toLocaleDateString(),
+            players: playerStats,
+            winners: winners.length ? winners : playerStats.filter(p => p.score === maxNet),
+            note: `Total Bank: $${totalInvested}`
+        };
+
+        const existing = JSON.parse(localStorage.getItem('houseGamesHistory') || '[]');
+        localStorage.setItem('houseGamesHistory', JSON.stringify([...existing, match]));
+
+        alert("Ledger saved successfully to History!");
+    };
+
     return (
         <div className="poker-container">
             <h2>Poker Ledger</h2>
@@ -92,7 +123,10 @@ function PokerLedger() {
                     />
                     <button onClick={addPlayer}>Add Player</button>
                     {players.length > 0 && (
-                        <button onClick={resetGame} style={{ backgroundColor: '#ef4444', marginLeft: '1rem' }}>Clear All</button>
+                        <>
+                            <button onClick={randomizeSeating} style={{ backgroundColor: '#10b981', marginLeft: '1rem' }}>🎲 Randomize Seating</button>
+                            <button onClick={resetGame} style={{ backgroundColor: '#ef4444', marginLeft: '1rem' }}>Clear All</button>
+                        </>
                     )}
                 </div>
             </div>
@@ -153,6 +187,9 @@ function PokerLedger() {
                             })}
                         </tbody>
                     </table>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                        <button onClick={saveMatch} className="buy-in-btn" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: 'white', border: 'none', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold' }}>🏆 Finish & Save Ledger</button>
+                    </div>
                 </div>
             )}
         </div>

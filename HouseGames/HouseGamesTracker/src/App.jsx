@@ -4,6 +4,7 @@ import SkullKingScoreSheet from './components/SkullKingScoreSheet';
 import RummyScoreSheet from './components/RummyScoreSheet';
 import LeastCountScoreSheet from './components/LeastCountScoreSheet';
 import PokerLedger from './components/PokerLedger';
+import HistoryDashboard from './components/HistoryDashboard';
 
 function App() {
   const [selectedGame, setSelectedGame] = useState('phase10');
@@ -25,6 +26,7 @@ function App() {
           <option value="rummy201">Rummy (201 Points)</option>
           <option value="rummy251">Rummy (251 Points)</option>
           <option value="poker">Poker Ledger</option>
+          <option value="history">👑 Leaderboard & History</option>
         </select>
       </div>
 
@@ -34,6 +36,7 @@ function App() {
       {selectedGame === 'rummy201' && <RummyScoreSheet targetScore={201} initialDrop={20} middleDrop={40} />}
       {selectedGame === 'rummy251' && <RummyScoreSheet targetScore={251} initialDrop={25} middleDrop={50} />}
       {selectedGame === 'poker' && <PokerLedger />}
+      {selectedGame === 'history' && <HistoryDashboard />}
     </div>
   );
 }
