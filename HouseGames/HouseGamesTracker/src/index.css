@@ -1,11 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light;
   color: #1e293b;
-  background-color: #e0f2fe; /* Light blue */
+
+  /* Animated gradient background variables */
+  --bg-gradient-1: #e0c3fc;
+  --bg-gradient-2: #8ec5fc;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,53 +29,109 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+  background-size: 400% 400%;
+  animation: bgBreathing 15s ease infinite;
+}
+
+@keyframes bgBreathing {
+  0% {
+    transform: scale(1);
+    background-position: 0% 50%;
+  }
+
+  50% {
+    transform: scale(1);
+    background-position: 100% 50%;
+  }
+
+  100% {
+    transform: scale(1);
+    background-position: 0% 50%;
+  }
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
+  font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 1rem;
-  color: #0c4a6e;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, #1e3a8a, #4338ca);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-align: center;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  border-radius: 12px;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #0ea5e9;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: white;
   cursor: pointer;
-  transition: border-color 0.25s, background-color 0.25s;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 button:hover {
-  background-color: #0284c7;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px -3px rgba(99, 102, 241, 0.5), 0 4px 6px -2px rgba(99, 102, 241, 0.25);
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
 }
 
-input, select {
+button:active {
+  transform: translateY(0);
+}
+
+input,
+select {
   font-family: inherit;
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background-color: #f8fafc;
   font-size: 1rem;
+  transition: all 0.2s;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.03);
 }
 
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #6366f1;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Glassmorphism Card Effect */
 .card {
-  background: white;
-  padding: 2em;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 800px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 2.5em;
+  border-radius: 24px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+    0 8px 10px -6px rgba(0, 0, 0, 0.01),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  width: 95%;
+  max-width: 900px;
   margin: 0 auto;
+  transition: transform 0.3s ease;
 }
 
 .game-selector {
@@ -78,69 +139,125 @@ input, select {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(241, 245, 249, 0.5);
+  border-radius: 16px;
+}
+
+.game-selector label {
+  font-weight: 600;
+  color: #475569;
 }
 
 .game-selector select {
-  padding: 0.5rem 1rem;
-  font-size: 1.1rem;
-  border: 2px solid #0ea5e9;
-  border-radius: 8px;
-  background-color: white;
-  color: #0f172a;
-  outline: none;
+  font-weight: 500;
+  color: #1e293b;
   cursor: pointer;
+  min-width: 200px;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1.5rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-th, td {
-  border: 1px solid #e2e8f0;
-  padding: 0.75rem;
+th,
+td {
+  padding: 1rem;
   text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  background-color: white;
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
 }
 
 th {
-  background-color: #f1f5f9;
+  background: #f8fafc;
   font-weight: 600;
   color: #334155;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
 }
 
-.total-row {
-  font-weight: bold;
-  background-color: #e0f2fe;
+.total-row td {
+  font-weight: 700;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  color: #0369a1;
+  font-size: 1.1rem;
+  border-top: 2px solid #bae6fd;
 }
 
 .score-input {
-  width: 60px;
+  width: 70px;
   text-align: center;
-  padding: 0.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  padding: 0.5rem;
+  border-radius: 8px;
 }
 
 .skull-king-cell {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
   align-items: center;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.skull-king-cell:hover {
+  background: #f1f5f9;
+}
+
+.skull-king-cell>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 0.25rem;
 }
 
 .skull-king-cell input {
-  width: 50px;
-  font-size: 0.9rem;
+  width: 55px;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0.4rem;
+  border-radius: 6px;
+}
+
+.skull-king-cell label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-right: 8px;
 }
 
 .player-setup {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
   justify-content: center;
+  align-items: center;
 }
 
 .player-setup input {
-  flex: 1;
-  max-width: 200px;
+  width: 100%;
+  max-width: 250px;
 }
