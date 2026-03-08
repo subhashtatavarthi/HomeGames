@@ -13,6 +13,8 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [newPlayerName, setNewPlayerName] = useState('');
 
+  const DEFAULT_NAMES = ['Subhash', 'Kalyani', 'Krishna', 'Kavya', 'Chaithali', 'Vishal', 'Anudeep', 'Bhargavi', 'Shyam', 'Soujanya'];
+
   const addPlayer = () => {
     if (newPlayerName.trim() === '') return;
     const newPlayerId = Date.now().toString();
@@ -52,6 +54,20 @@ function App() {
             className="global-player-input"
           />
           <button onClick={addPlayer} className="global-add-btn">Add Player</button>
+        </div>
+
+        <div className="quick-add-chips">
+          {DEFAULT_NAMES.filter(name => !players.some(p => p.name === name)).map(name => (
+            <button
+              key={name}
+              className="quick-chip"
+              onClick={() => {
+                setPlayers(prev => [...prev, { id: Date.now().toString() + name, name }]);
+              }}
+            >
+              + {name}
+            </button>
+          ))}
         </div>
 
         <div className="global-player-list">
