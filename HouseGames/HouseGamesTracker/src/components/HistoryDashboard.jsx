@@ -16,9 +16,10 @@ function HistoryDashboard() {
     }, []);
 
     const clearHistory = () => {
-        if (window.confirm("Are you sure you want to completely erase all Match History and Leaderboards? This cannot be undone.")) {
+        if (window.confirm("Are you sure you want to erase ALL Match History and Leaderboards? This cannot be undone.")) {
             localStorage.removeItem('houseGamesHistory');
             setHistory([]);
+            window.location.reload();
         }
     };
 
